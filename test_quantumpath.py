@@ -6,6 +6,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from feedback import FIELDS, save_feedback  # noqa: E402
 from i18n import TEXT  # noqa: E402
+from level import expertise_level  # noqa: E402
 from bloch import bloch_svg, describe  # noqa: E402
 from quantum import (  # noqa: E402
     GATES,
@@ -134,3 +135,52 @@ def test_quiz_explanation_shown_after_answering():
     [b for b in at.button if b.label == "Check answer"][0].click().run()
     assert at.error and any("Why:" in m.value and "50%" in m.value for m in at.markdown)
     assert not at.exception
+
+def test_expertise_level_thresholds():
+    assert expertise_level(0, 0, 7) == "not_assessed"
+    assert expertise_level(0, 7, 7) == "beginner"
+    assert expertise_level(3, 7, 7) == "beginner"  # 43%
+    assert expertise_level(4, 7, 7) == "intermediate"  # 57%
+    assert expertise_level(5, 7, 7) == "intermediate"  # 71%
+    assert expertise_level(6, 7, 7) == "advanced"  # 86%
+    assert expertise_level(7, 7, 7) == "advanced"
+    # Unanswered questions count against the learner: 4 right out of 4 answered is still 4/7.
+    assert expertise_level(4, 4, 7) == "intermediate"
+
+
+def test_i18n_expertise_and_concepts_covered():
+    en, hi = TEXT["en"], TEXT["hi"]
+    assert en["concepts"] == "Concepts covered"
+    assert "understood" not in en["concepts"].lower() and hi["concepts"] != "समझी गई अवधारणाएँ"
+    levels = {"not_assessed", "beginner", "intermediate", "advanced"}
+    for T in (en, hi):
+        assert T["levels"].keys() == T["level_desc"].keys() == levels
+        assert len(set(T["levels"].values())) == 4
+        T["level_partial"].format(answered=1, total=2)
+
+
+def test_report_shows_expertise_level():
+    from streamlit.testing.v1 import AppTest
+
+    quiz = {lesson: TEXT["en"]["quiz"][lesson] for lesson in ("l1", "l2", "l3", "l4")}
+    keys = [(f"{k}_{i}", q["answer"]) for k, qs in quiz.items() for i, q in enumerate(qs)]
+
+    def report(answers, lang="en"):
+        at = AppTest.from_file(str(Path(__file__).parent / "app.py"), default_timeout=60)
+        at.session_state["screen"] = "report"
+        at.session_state["lang"] = lang
+        at.session_state["answers"] = answers
+        at.run()
+        assert not at.exception
+        return " ".join(m.value for m in at.markdown) + " ".join(c.value for c in at.caption)
+
+    right = {k: a for k, a in keys}
+    wrong = {k: (a + 1) % 3 for k, a in keys}
+    text = report(right)
+    assert "Expertise level:** Advanced" in text and "Concepts covered" in text and "Concepts understood" not in text
+    assert "Expertise level:** Beginner" in report(wrong)
+    assert "Not yet assessed" in report({})
+    half = dict(list(right.items())[:4])  # 4 right of 7 answered -> intermediate, with a partial note
+    text = report(half)
+    assert "Intermediate" in text and "4 of 7" in text
+    assert "शुरुआती" in report(wrong, "hi") and "कवर की गई अवधारणाएँ" in report(right, "hi")

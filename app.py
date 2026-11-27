@@ -13,6 +13,7 @@ import streamlit as st  # noqa: E402
 from bloch import bloch_svg, describe  # noqa: E402
 from feedback import save_feedback, summary_json  # noqa: E402
 from i18n import LANGUAGES, TEXT  # noqa: E402
+from level import expertise_level  # noqa: E402
 from quantum import (  # noqa: E402
     GATES,
     MAX_GATES,
@@ -314,14 +315,17 @@ def screen_l4() -> None:
 def build_summary() -> dict:
     completed = [T["lessons"][i] for i, k in enumerate(LESSON_KEYS) if lesson_done(k)]
     total = sum(len(quiz_items(k)) for k in LESSON_KEYS)
+    answered = sum(f"{k}_{i}" in ss.answers for k in LESSON_KEYS for i in range(len(quiz_items(k))))
     correct = [(k, i) for k in LESSON_KEYS for i in range(len(quiz_items(k))) if is_correct(k, i)]
     return {
         "language": ss.lang,
         "role": ss.role,
         "lessons_completed": completed,
         "score": len(correct),
+        "answered": answered,
         "total": total,
-        "concepts_understood": [quiz_items(k)[i]["concept"] for k, i in correct],
+        "expertise_level": expertise_level(len(correct), answered, total),
+        "concepts_covered": [quiz_items(k)[i]["concept"] for k, i in correct],
         "run_on_simulator": bool(ss.ran),
     }
 
@@ -333,9 +337,13 @@ def screen_report() -> None:
     c1.metric(T["lessons_completed"], f"{len(s['lessons_completed'])}/{len(LESSON_KEYS)}")
     c2.metric(T["quiz_score"], f"{s['score']}/{s['total']}")
     c3.metric(T["pref_language"], LANGUAGES[s["language"]])
+    st.markdown(f"**{T['expertise']}:** {T['levels'][s['expertise_level']]}")
+    st.caption(T["level_desc"][s["expertise_level"]])
+    if 0 < s["answered"] < s["total"]:
+        st.caption(T["level_partial"].format(answered=s["answered"], total=s["total"]))
     st.markdown(f"**{T['concepts']}**")
-    if s["concepts_understood"]:
-        for c in s["concepts_understood"]:
+    if s["concepts_covered"]:
+        for c in s["concepts_covered"]:
             st.markdown(f"- {c}")
     else:
         st.caption(T["no_concepts"])
