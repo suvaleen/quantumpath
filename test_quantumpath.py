@@ -113,3 +113,24 @@ def test_bloch_svg_is_image_safe():
         assert f'<rect width="240" height="250" rx="8" fill="{bg}"/>' in svg
     app_source = (Path(__file__).parent / "app.py").read_text(encoding="utf-8")
     assert "st.html(bloch_svg" not in app_source and "st.image(bloch_svg" in app_source
+
+def test_every_quiz_question_has_an_explanation():
+    for lang in ("en", "hi"):
+        assert TEXT[lang]["why_label"]
+        for lesson in ("l1", "l2", "l3", "l4"):
+            for q in TEXT[lang]["quiz"][lesson]:
+                assert len(q["why"]) > 40
+                assert q["answer"] < len(q["options"])
+
+
+def test_quiz_explanation_shown_after_answering():
+    from streamlit.testing.v1 import AppTest
+
+    at = AppTest.from_file(str(Path(__file__).parent / "app.py"), default_timeout=60)
+    at.session_state["screen"] = "l2"
+    at.run()
+    assert not any("Why:" in m.value for m in at.markdown)  # hidden until answered
+    at.radio(key="radio_l2_0").set_value(0).run()  # a wrong answer
+    [b for b in at.button if b.label == "Check answer"][0].click().run()
+    assert at.error and any("Why:" in m.value and "50%" in m.value for m in at.markdown)
+    assert not at.exception

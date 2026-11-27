@@ -140,6 +140,7 @@ def show_quiz(lesson: str) -> None:
                 st.success(T["correct"])
             else:
                 st.error(T["incorrect"] + item["options"][item["answer"]])
+            st.markdown(f"**{T['why_label']}** {item['why']}")
         elif st.button(T["submit"], key=f"submit_{key}", disabled=choice is None):
             ss.answers[key] = choice
             st.rerun()
