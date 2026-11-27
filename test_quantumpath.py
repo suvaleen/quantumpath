@@ -104,3 +104,12 @@ def test_i18n_nested_keys_match():
     assert en["l4"].keys() == hi["l4"].keys()
     assert len(en["journey"]) == len(hi["journey"])
     assert len(en["lessons"]) == len(hi["lessons"]) == 4
+
+def test_bloch_svg_is_image_safe():
+    # st.html strips <svg>, so the sphere is shown with st.image: no currentColor, own background.
+    for hc, bg in ((False, "#FFFFFF"), (True, "#000000")):
+        svg = bloch_svg(0, 0, 1, "t", "d", high_contrast=hc)
+        assert "currentColor" not in svg
+        assert f'<rect width="240" height="250" rx="8" fill="{bg}"/>' in svg
+    app_source = (Path(__file__).parent / "app.py").read_text(encoding="utf-8")
+    assert "st.html(bloch_svg" not in app_source and "st.image(bloch_svg" in app_source

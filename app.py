@@ -44,6 +44,11 @@ HIGH_CONTRAST_CSS = """
 .stApp p, .stApp li, .stApp label, .stApp span, .stApp div, .stApp h1, .stApp h2, .stApp h3,
 .stApp code, .stApp [data-testid="stMetricValue"], .stApp [data-testid="stCaptionContainer"] { color: #fff !important; }
 .stApp a { color: #ffd700 !important; }
+.stApp pre, .stApp code, .stApp [data-testid="stCode"], .stApp [data-testid="stCode"] > div {
+    background: #000 !important; color: #fff !important; }
+.stApp [data-testid="stCode"] { border: 1px solid #fff !important; }
+.stApp [data-testid="stAlert"], .stApp [data-testid="stAlert"] > div {
+    background: #000 !important; border: 2px solid #ffd700 !important; }
 .stApp button { background: #000 !important; color: #fff !important; border: 2px solid #fff !important; }
 .stApp input, .stApp textarea, .stApp [data-baseweb="select"] > div {
     background: #000 !important; color: #fff !important; border: 2px solid #fff !important; }
@@ -176,7 +181,8 @@ def show_bloch(gates) -> None:
     x, y, z = bloch_vector(gates)
     desc = describe(x, y, z, T)
     st.markdown(f"**{T['bloch_title']}**")
-    st.html(bloch_svg(x, y, z, T["bloch_svg_title"], desc, high_contrast=ss.hc))
+    # st.html would strip the <svg>, so show it as an image; `alt` is the screen-reader text.
+    st.image(bloch_svg(x, y, z, T["bloch_svg_title"], desc, high_contrast=ss.hc), alt=desc, width=300)
     st.caption(f"{T['bloch_caption']} {desc}")
 
 
