@@ -11,13 +11,14 @@ TEXT = {
         "language": "Language",
         "role": "I am a",
         "roles": {"student": "Student", "teacher": "Teacher"},
-        "welcome_intro": "Learn the basics of quantum computing in three short, hands-on lessons. "
+        "welcome_intro": "Learn the basics of quantum computing in four short, hands-on lessons. "
                          "Everything runs on a local simulator, so no quantum hardware is needed.",
         "journey_title": "Your learning journey",
         "journey": [
             "Lesson 1: Qubits and measurement",
             "Lesson 2: The quantum coin (superposition)",
             "Lesson 3: Entanglement with a Bell state",
+            "Lesson 4: Gate lab and the Bloch sphere",
             "Completion report",
         ],
         "teacher_note": "Teacher tip: each lesson ends with a quiz. The completion report gives you a "
@@ -38,7 +39,26 @@ TEXT = {
         "answered": "Answered",
         "run_first": "Run the circuit first to see results.",
         "progress": "Progress",
-        "lessons": ["Lesson 1", "Lesson 2", "Lesson 3"],
+        "lessons": ["Lesson 1", "Lesson 2", "Lesson 3", "Lesson 4"],
+        "a11y_title": "Accessibility",
+        "high_contrast": "High-contrast mode",
+        "large_text": "Larger text",
+        "a11y_help": "Every chart also has a text summary, and every diagram has a description for screen readers.",
+        "chart_summary": "Text summary of the chart",
+        "circuit_words": "Circuit in words",
+        "measure": "measure",
+        "bloch_title": "Bloch sphere",
+        "bloch_caption": "The arrow shows the qubit state before measurement. The top is |0⟩ and the bottom is |1⟩.",
+        "bloch_svg_title": "Bloch sphere showing the qubit state",
+        "bloch_desc": "The state arrow points to x = {x:.2f}, y = {y:.2f}, z = {z:.2f}, {where}. "
+                      "Measuring gives 0 with probability {p0:.0f}% and 1 with probability {p1:.0f}%.",
+        "bloch_where": {
+            "north": "at the top pole (state |0⟩)",
+            "south": "at the bottom pole (state |1⟩)",
+            "equator": "on the equator, halfway between |0⟩ and |1⟩",
+            "upper": "in the upper half, closer to |0⟩",
+            "lower": "in the lower half, closer to |1⟩",
+        },
         "l1": {
             "title": "Lesson 1: Qubits and measurement",
             "teach": [
@@ -78,6 +98,40 @@ TEXT = {
             "note": "Without CX the qubits are independent, so all four outcomes appear. "
                     "With CX only 00 and 11 appear.",
         },
+        "l4": {
+            "title": "Lesson 4: Gate lab and the Bloch sphere",
+            "teach": [
+                "A single-qubit gate **rotates** the qubit's state on the **Bloch sphere**.",
+                "|0⟩ is the top (north pole) and |1⟩ is the bottom (south pole).",
+                "X, Y and Z are half-turns about the x, y and z axes. H, S and T are common building blocks, "
+                "and RX, RY and RZ rotate by any angle you choose.",
+                "Only the up-down position (z) sets the 0/1 measurement probabilities. "
+                "Gates such as Z, S and T turn the arrow sideways, which changes its phase but not those probabilities.",
+            ],
+            "gate": "Gate",
+            "angle": "Rotation angle (degrees)",
+            "add": "Add gate",
+            "undo": "Undo last gate",
+            "clear": "Clear all gates",
+            "sequence": "Gate sequence (applied left to right)",
+            "empty": "No gates yet. The qubit is still in |0⟩. Pick a gate and add it.",
+            "limit": "Maximum of 12 gates reached.",
+            "note": "Try H, then T, then H: the result is no longer 50/50.",
+            "gate_info": {
+                "X": "Bit flip: swaps |0⟩ and |1⟩ (half-turn about x).",
+                "Y": "Half-turn about the y axis; also swaps |0⟩ and |1⟩.",
+                "Z": "Phase flip: half-turn about z; |0⟩ and |1⟩ measure the same.",
+                "H": "Hadamard: turns |0⟩ into an equal superposition.",
+                "S": "Quarter-turn about z (a 90° phase shift).",
+                "Sdg": "Inverse of S: quarter-turn about z the other way.",
+                "T": "Eighth-turn about z (a 45° phase shift).",
+                "Tdg": "Inverse of T: eighth-turn about z the other way.",
+                "SX": "Square root of X: a quarter-turn about x.",
+                "RX": "Rotate about the x axis by the chosen angle.",
+                "RY": "Rotate about the y axis by the chosen angle.",
+                "RZ": "Rotate about the z axis by the chosen angle (changes phase only).",
+            },
+        },
         "quiz_title": "Quiz",
         "quiz": {
             "l1": [
@@ -100,6 +154,14 @@ TEXT = {
                 {"q": "What is the role of the CX gate?",
                  "options": ["It links qubit 1 to qubit 0", "It measures the qubits", "It resets both qubits"],
                  "answer": 0, "concept": "CX links two qubits"},
+            ],
+            "l4": [
+                {"q": "You apply H twice in a row to a qubit starting in |0⟩. What do you measure?",
+                 "options": ["An equal mix of 0 and 1", "Always 0", "Always 1"], "answer": 1,
+                 "concept": "Gates are reversible rotations"},
+                {"q": "Which gate changes the phase but leaves a |0⟩ measurement unchanged?",
+                 "options": ["Z", "X", "H"], "answer": 0,
+                 "concept": "Phase versus measurement probability"},
             ],
         },
         "report_title": "Completion report",
@@ -124,13 +186,14 @@ TEXT = {
         "language": "भाषा",
         "role": "मैं हूँ",
         "roles": {"student": "विद्यार्थी", "teacher": "शिक्षक"},
-        "welcome_intro": "तीन छोटे, प्रायोगिक पाठों में क्वांटम कंप्यूटिंग की बुनियादी बातें सीखें। "
+        "welcome_intro": "चार छोटे, प्रायोगिक पाठों में क्वांटम कंप्यूटिंग की बुनियादी बातें सीखें। "
                          "सब कुछ स्थानीय सिमुलेटर पर चलता है, इसलिए क्वांटम हार्डवेयर की ज़रूरत नहीं है।",
         "journey_title": "आपकी सीखने की यात्रा",
         "journey": [
             "पाठ 1: क्यूबिट और मापन",
             "पाठ 2: क्वांटम सिक्का (सुपरपोज़िशन)",
             "पाठ 3: बेल अवस्था के साथ एंटैंगलमेंट",
+            "पाठ 4: गेट लैब और ब्लॉख गोला",
             "समापन रिपोर्ट",
         ],
         "teacher_note": "शिक्षक सुझाव: हर पाठ के अंत में एक क्विज़ है। समापन रिपोर्ट में डाउनलोड करने योग्य "
@@ -151,7 +214,26 @@ TEXT = {
         "answered": "उत्तर दिया गया",
         "run_first": "परिणाम देखने के लिए पहले सर्किट चलाएँ।",
         "progress": "प्रगति",
-        "lessons": ["पाठ 1", "पाठ 2", "पाठ 3"],
+        "lessons": ["पाठ 1", "पाठ 2", "पाठ 3", "पाठ 4"],
+        "a11y_title": "सुगम्यता",
+        "high_contrast": "उच्च-कंट्रास्ट मोड",
+        "large_text": "बड़ा टेक्स्ट",
+        "a11y_help": "हर चार्ट के साथ टेक्स्ट सारांश है, और हर आरेख का स्क्रीन रीडर के लिए विवरण है।",
+        "chart_summary": "चार्ट का टेक्स्ट सारांश",
+        "circuit_words": "शब्दों में सर्किट",
+        "measure": "मापन",
+        "bloch_title": "ब्लॉख गोला",
+        "bloch_caption": "तीर मापन से पहले क्यूबिट की अवस्था दिखाता है। ऊपर |0⟩ है और नीचे |1⟩।",
+        "bloch_svg_title": "क्यूबिट की अवस्था दिखाता ब्लॉख गोला",
+        "bloch_desc": "अवस्था का तीर x = {x:.2f}, y = {y:.2f}, z = {z:.2f} की ओर है, {where}। "
+                      "मापने पर 0 की संभावना {p0:.0f}% और 1 की संभावना {p1:.0f}% है।",
+        "bloch_where": {
+            "north": "ऊपरी ध्रुव पर (अवस्था |0⟩)",
+            "south": "निचले ध्रुव पर (अवस्था |1⟩)",
+            "equator": "भूमध्य रेखा पर, |0⟩ और |1⟩ के ठीक बीच",
+            "upper": "ऊपरी आधे भाग में, |0⟩ के अधिक निकट",
+            "lower": "निचले आधे भाग में, |1⟩ के अधिक निकट",
+        },
         "l1": {
             "title": "पाठ 1: क्यूबिट और मापन",
             "teach": [
@@ -190,6 +272,40 @@ TEXT = {
             "not_entangled": "CX के बिना (नॉन-एंटैंगल्ड)",
             "note": "CX के बिना क्यूबिट स्वतंत्र हैं, इसलिए चारों परिणाम दिखते हैं। CX के साथ केवल 00 और 11 दिखते हैं।",
         },
+        "l4": {
+            "title": "पाठ 4: गेट लैब और ब्लॉख गोला",
+            "teach": [
+                "एकल-क्यूबिट गेट क्यूबिट की अवस्था को **ब्लॉख गोले** पर **घुमाता** है।",
+                "|0⟩ शीर्ष (उत्तरी ध्रुव) है और |1⟩ तल (दक्षिणी ध्रुव) है।",
+                "X, Y और Z क्रमशः x, y और z अक्ष के गिर्द आधा चक्कर हैं। H, S और T आम बुनियादी गेट हैं, "
+                "और RX, RY, RZ आपके चुने किसी भी कोण से घुमाते हैं।",
+                "केवल ऊपर-नीचे की स्थिति (z) 0/1 मापन की संभावनाएँ तय करती है। "
+                "Z, S और T जैसे गेट तीर को बगल में घुमाते हैं, जिससे फेज़ बदलता है पर ये संभावनाएँ नहीं।",
+            ],
+            "gate": "गेट",
+            "angle": "घूर्णन कोण (डिग्री)",
+            "add": "गेट जोड़ें",
+            "undo": "आखिरी गेट हटाएँ",
+            "clear": "सभी गेट हटाएँ",
+            "sequence": "गेट क्रम (बाएँ से दाएँ लागू)",
+            "empty": "अभी कोई गेट नहीं। क्यूबिट अब भी |0⟩ में है। एक गेट चुनकर जोड़ें।",
+            "limit": "अधिकतम 12 गेट की सीमा पूरी हो गई।",
+            "note": "H, फिर T, फिर H आज़माएँ: परिणाम अब 50/50 नहीं रहता।",
+            "gate_info": {
+                "X": "बिट फ़्लिप: |0⟩ और |1⟩ को आपस में बदलता है (x के गिर्द आधा चक्कर)।",
+                "Y": "y अक्ष के गिर्द आधा चक्कर; यह भी |0⟩ और |1⟩ को आपस में बदलता है।",
+                "Z": "फेज़ फ़्लिप: z के गिर्द आधा चक्कर; |0⟩ और |1⟩ का मापन समान रहता है।",
+                "H": "हैडमार्ड: |0⟩ को बराबर सुपरपोज़िशन में बदलता है।",
+                "S": "z के गिर्द चौथाई चक्कर (90° फेज़ शिफ्ट)।",
+                "Sdg": "S का उलटा: z के गिर्द विपरीत दिशा में चौथाई चक्कर।",
+                "T": "z के गिर्द आठवाँ चक्कर (45° फेज़ शिफ्ट)।",
+                "Tdg": "T का उलटा: z के गिर्द विपरीत दिशा में आठवाँ चक्कर।",
+                "SX": "X का वर्गमूल: x के गिर्द चौथाई चक्कर।",
+                "RX": "चुने गए कोण से x अक्ष के गिर्द घुमाएँ।",
+                "RY": "चुने गए कोण से y अक्ष के गिर्द घुमाएँ।",
+                "RZ": "चुने गए कोण से z अक्ष के गिर्द घुमाएँ (केवल फेज़ बदलता है)।",
+            },
+        },
         "quiz_title": "क्विज़",
         "quiz": {
             "l1": [
@@ -212,6 +328,14 @@ TEXT = {
                 {"q": "CX गेट की भूमिका क्या है?",
                  "options": ["यह क्यूबिट 1 को क्यूबिट 0 से जोड़ता है", "यह क्यूबिट मापता है", "यह दोनों क्यूबिट रीसेट करता है"],
                  "answer": 0, "concept": "CX दो क्यूबिट को जोड़ता है"},
+            ],
+            "l4": [
+                {"q": "|0⟩ से शुरू होने वाले क्यूबिट पर लगातार दो बार H लगाने पर क्या मापन मिलेगा?",
+                 "options": ["0 और 1 का बराबर मिश्रण", "हमेशा 0", "हमेशा 1"], "answer": 1,
+                 "concept": "गेट उलटे जा सकने वाले घूर्णन हैं"},
+                {"q": "कौन-सा गेट फेज़ बदलता है पर |0⟩ का मापन नहीं बदलता?",
+                 "options": ["Z", "X", "H"], "answer": 0,
+                 "concept": "फेज़ बनाम मापन संभावना"},
             ],
         },
         "report_title": "समापन रिपोर्ट",
